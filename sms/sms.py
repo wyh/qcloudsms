@@ -1,16 +1,9 @@
-#! /usr/bin/env python3
-# encoding:utf-8
-# python 3.6 测试通过
-
-import http.client as httplib
-import json
 import hashlib
 import random
-import time
-from  .tools import SmsSenderUtil
+import tools
 
-class SmsSingleSender:
-    """ 单发类定义"""
+class SMSSender:
+    """ 发送单条短信"""
     appid = 0
     appkey = ""
     url = "https://yun.tim.qq.com/v5/tlssmssvr/sendsms"
@@ -18,9 +11,8 @@ class SmsSingleSender:
     def __init__(self, appid, appkey):
         self.appid = appid
         self.appkey = appkey
-        self.util = SmsSenderUtil()
 
-    def send(self, sms_type, nation_code, phone_number, msg, extend, ext):
+    def send_msg(self, sms_type, nation_code, phone_number, msg, extend, ext):
         """ 普通群发接口
         明确指定内容，如果有多个签名，请在内容中以【】的方式添加到信息内容中，否则系统将使用默认签名
 
@@ -32,9 +24,7 @@ class SmsSingleSender:
             extend: 扩展码，可填空串
             ext: 服务端原样返回的参数，可填空串
 
-        Returns:
-            json string { "result": xxxx, "errmsg": "xxxxx" ... }，被省略的内容参见协议文档
-            请求包体
+	Request Data:
             {
                 "tel": {
                     "nationcode": "86",
@@ -47,7 +37,9 @@ class SmsSingleSender:
                 "extend": "",
                 "ext": ""
             }
-            应答包体
+
+	Response:
+
             {
                 "result": 0,
                 "errmsg": "OK",
@@ -56,8 +48,8 @@ class SmsSingleSender:
                 "fee": 1
             }
         """
-        rnd = self.util.get_random()
-        cur_time = self.util.get_cur_time()
+        rnd = tools.get_random()
+        cur_time = tools.get_cur_time()
 
         data = {}
 
@@ -71,10 +63,10 @@ class SmsSingleSender:
         data["extend"] = extend
         data["ext"] = ext
 
-        whole_url = self.url + "?sdkappid=" + str(self.appid) + "&random=" + str(rnd)
-        return self.util.send_post_request("yun.tim.qq.com", whole_url, data)
+        url = "{url}?sdkappid={appid}&random={rnd}".format(url=self.url, appid=self.appid, rnd=rnd)
+        return tools.send_request(url, data)
 
-    def send_with_param(self, nation_code, phone_number, templ_id, params, sign, extend, ext):
+    def send_by_template(self, nation_code, phone_number, templ_id, params, sign, extend, ext):
         """ 指定模板单发
 
         Args:
@@ -115,8 +107,8 @@ class SmsSingleSender:
                 "fee": 1
             }
         """
-        rnd = self.util.get_random()
-        cur_time = self.util.get_cur_time()
+        rnd = tools.get_random()
+        cur_time = tools.get_cur_time()
 
         data = {}
 
@@ -124,18 +116,18 @@ class SmsSingleSender:
         data["tel"] = tel
         data["tpl_id"] = templ_id
         data["sign"] = sign
-        data["sig"] = self.util.calculate_sig_for_templ(self.appkey, rnd, cur_time, phone_number)
+        data["sig"] = tools.calculate_sig_for_templ(self.appkey, rnd, cur_time, phone_number)
         data["params"] = params
         data["time"] = cur_time
         data["extend"] = extend
         data["ext"] = ext
 
-        whole_url = self.url + "?sdkappid=" + str(self.appid) + "&random=" + str(rnd)
-        return self.util.send_post_request("yun.tim.qq.com", whole_url, data)
+        url = "{url}?sdkappid={appid}&random={rnd}".format(url=self.url, appid=self.appid, rnd=rnd)
+        return tools.send_request(url, data)
 
 
-class SmsMultiSender:
-    """ 群发类定义"""
+class SMSBatchSender:
+    """ 群发短信"""
     appid = 0
     appkey = ""
     url = "https://yun.tim.qq.com/v5/tlssmssvr/sendmultisms2"
@@ -143,9 +135,8 @@ class SmsMultiSender:
     def __init__(self, appid, appkey):
         self.appid = appid
         self.appkey = appkey
-        self.util = SmsSenderUtil()
 
-    def send(self, sms_type, nation_code, phone_numbers, msg, extend, ext):
+    def send_msg(self, sms_type, nation_code, phone_numbers, msg, extend, ext):
         """ 普通群发
         【注意】海外短信没有群发功能
 
@@ -204,23 +195,23 @@ class SmsMultiSender:
             ]
         }
         """
-        rnd = self.util.get_random()
-        cur_time = self.util.get_cur_time()
+        rnd = tools.get_random()
+        cur_time = tools.get_cur_time()
 
         data = {}
 
-        data["tel"] = self.util.phone_numbers_to_list(nation_code, phone_numbers)
+        data["tel"] = tools.phone_numbers_to_list(nation_code, phone_numbers)
         data["type"] = sms_type
         data["msg"] = msg
-        data["sig"] = self.util.calculate_sig(self.appkey, rnd, cur_time, phone_numbers)
+        data["sig"] = tools.calculate_sig(self.appkey, rnd, cur_time, phone_numbers)
         data["time"] = cur_time
         data["extend"] = extend
         data["ext"] = ext
 
-        whole_url = self.url + "?sdkappid=" + str(self.appid) + "&random=" + str(rnd)
-        return self.util.send_post_request("yun.tim.qq.com", whole_url, data)
+        url = "{url}?sdkappid={appid}&random={rnd}".format(url=self.url, appid=self.appid, rnd=rnd)
+        return tools.send_request(url, data)
 
-    def send_with_param(self, nation_code, phone_numbers, templ_id, params, sign, extend, ext):
+    def send_by_template(self, nation_code, phone_numbers, templ_id, params, sign, extend, ext):
         """ 指定模板群发
         【注意】海外短信没有群发功能
 
@@ -278,19 +269,19 @@ class SmsMultiSender:
             ]
         }
         """
-        rnd = self.util.get_random()
-        cur_time = self.util.get_cur_time()
+        rnd = tools.get_random()
+        cur_time = tools.get_cur_time()
 
         data = {}
 
-        data["tel"] = self.util.phone_numbers_to_list(nation_code, phone_numbers)
+        data["tel"] = tools.phone_numbers_to_list(nation_code, phone_numbers)
         data["sign"] = sign
-        data["sig"] = self.util.calculate_sig_for_templ_phone_numbers(self.appkey, rnd, cur_time, phone_numbers)
+        data["sig"] = tools.calculate_sig_for_templ_phone_numbers(self.appkey, rnd, cur_time, phone_numbers)
         data["tpl_id"] = templ_id
         data["params"] = params
         data["time"] = cur_time
         data["extend"] = extend
         data["ext"] = ext
 
-        whole_url = self.url + "?sdkappid=" + str(self.appid) + "&random=" + str(rnd)
-        return self.util.send_post_request("yun.tim.qq.com", whole_url, data)
+        url = "{url}?sdkappid={appid}&random={rnd}".format(url=self.url, appid=self.appid, rnd=rnd)
+        return tools.send_request(url, data)
