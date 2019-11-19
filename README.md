@@ -1,8 +1,9 @@
-# qcloudsms-python3
-
-
-腾讯云短信SDK for Python 3
+# 腾讯云SMS Python3 SDK
 代码修改自： `samhjn/qcloudsms-python3`
+
+这个项目尝试用很简单的代码完成绝大部分功能，删除了语音这些很少用到的东西；
+目标是初始化后立即可以使用
+后续考虑支持Log 短信的发送状态，便于日志分析
 
 ### 用法
 
