@@ -40,7 +40,4 @@ def phone_numbers_to_list(self, nation_code, phone_numbers):
 
 def send_request(self, url, data):
     rsp = requests.post(url, data)
-    if rsp.status_code == 200:
-	return rsp.results
-
     return rsp

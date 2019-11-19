@@ -17,9 +17,8 @@ sender = SMSSender(appid, appkey)
 templ_id = 20000
 phone_number = "132xxxxxxxx"
 params = ["赋影", "100.00"]
-result = sender.send_by_template("86", phone_number, templ_id, params, "", "", "")
-rsp = json.loads(result)
-print(rsp)
+rsp = sender.send_by_template("86", phone_number, templ_id, params, "", "", "")
+print(rsp.results)
 ```
 
 其余功能的具体使用与官方SDK类似，可以参考[官方SDK使用样例](https://github.com/qcloudsms/qcloudsms/blob/master/demo/python/main.py)。
