@@ -1,6 +1,4 @@
-import http.client as httplib
 import requests
-import json
 import hashlib
 import random
 import time
