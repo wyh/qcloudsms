@@ -1,6 +1,6 @@
 import hashlib
 import random
-import tools
+from sms import tools
 
 class SMSSender:
     """ 发送单条短信"""
@@ -123,6 +123,8 @@ class SMSSender:
         data["ext"] = ext
 
         url = "{url}?sdkappid={appid}&random={rnd}".format(url=self.url, appid=self.appid, rnd=rnd)
+        print(url)
+        print(data)
         return tools.send_request(url, data)
 
 

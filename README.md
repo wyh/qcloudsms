@@ -1,28 +1,22 @@
 # 腾讯云SMS Python3 SDK
 代码修改自： `samhjn/qcloudsms-python3`
 
+[官方SDK使用样例](https://github.com/qcloudsms/qcloudsms/blob/master/demo/python/main.py)。
+
+## 项目初心
+
 目标是初始化后立即可以使用
 
-这个项目尝试用很简单的代码完成绝大部分功能，删除了语音这些很少用到的东西，
-特别是变更了原代码中糟糕的class 命名，已经不使用默认的 requests 来发送请求，
-做很多复杂的包装；
+尝试用很简单的代码完成绝大部分功能。
+
+在原有项目上，主要做了以下变更：
+
+1. 删除了语音这些很少用到的东西，
+2. 变更了原代码中不合适的class 命名
+3. 使用python3的 requests 来发送请求
+4. 添加了 demo 文件，原来代码的 demo 跑不起来
 
 
-### 用法
+## 用法
 
-```python
-import json
-from sms.sender import SMSSender
-
-appid = 1000000
-appkey = "ffffffffffffffffffffffffff"  
-sender = SMSSender(appid, appkey)
-
-templ_id = 20000
-phone_number = "132xxxxxxxx"
-params = ["赋影", "100.00"]
-rsp = sender.send_by_template("86", phone_number, templ_id, params, "", "", "")
-print(rsp.results)
-```
-
-功能的具体使用与官方SDK类似，可以参考[官方SDK使用样例](https://github.com/qcloudsms/qcloudsms/blob/master/demo/python/main.py)。
+请参考 demo.py 文件

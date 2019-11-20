@@ -1,3 +1,4 @@
+import json
 import requests
 import hashlib
 import random
@@ -28,7 +29,7 @@ def calculate_sig_for_templ_phone_numbers(appkey, rnd, cur_time, phone_numbers):
 
 def calculate_sig_for_templ(appkey, rnd, cur_time, phone_number):
     phone_numbers = [phone_number]
-    return .calculate_sig_for_templ_phone_numbers(appkey, rnd, cur_time, phone_numbers)
+    return calculate_sig_for_templ_phone_numbers(appkey, rnd, cur_time, phone_numbers)
 
 def phone_numbers_to_list(nation_code, phone_numbers):
     tel = []
@@ -37,5 +38,5 @@ def phone_numbers_to_list(nation_code, phone_numbers):
     return tel
 
 def send_request(url, data):
-    rsp = requests.post(url, data)
+    rsp = requests.post(url, data=json.dumps(data))
     return rsp
