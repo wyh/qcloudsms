@@ -1,4 +1,4 @@
-from sms.sender import SMSSender
+from qcloud_sms.sender import SMSSender
 
 appid = ""
 appkey = ""

@@ -1,6 +1,6 @@
 import hashlib
 import random
-from sms import tools
+from qcloud_sms import tools
 
 class SMSSender:
     """ 发送单条短信"""
