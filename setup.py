@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="qcloudsms", # Replace with your own username
-    version="0.2",
+    version="0.21",
     author="SamuelWu",
     author_email="samuel.yh.wu@gmail.com",
     description="Qcloud(Tecent Cloud) Python3 SMS SDK",

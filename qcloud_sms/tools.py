@@ -12,7 +12,7 @@ def get_cur_time():
     return int(time.time())
 
 def calculate_sig(appkey, rnd, cur_time, phone_numbers):
-    if type(phone_numbers) == str:
+    if type(phone_numbers) in (str, int):
         phone_numbers = [phone_numbers]
 
 
