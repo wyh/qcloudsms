@@ -7,7 +7,7 @@ templ_id = ""
 params = ["1234"]
 sign = "稻田Tanbo网"
 
-phone_number = "186****8273"
+phone_number = "186*********"
 
 
 if __name__ == "__main__":

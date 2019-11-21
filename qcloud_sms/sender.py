@@ -116,15 +116,13 @@ class SMSSender:
         data["tel"] = tel
         data["tpl_id"] = templ_id
         data["sign"] = sign
-        data["sig"] = tools.calculate_sig_for_templ(self.appkey, rnd, cur_time, phone_number)
+        data["sig"] = tools.calculate_sig(self.appkey, rnd, cur_time, phone_number)
         data["params"] = params
         data["time"] = cur_time
         data["extend"] = extend
         data["ext"] = ext
 
         url = "{url}?sdkappid={appid}&random={rnd}".format(url=self.url, appid=self.appid, rnd=rnd)
-        print(url)
-        print(data)
         return tools.send_request(url, data)
 
 
@@ -278,7 +276,7 @@ class SMSBatchSender:
 
         data["tel"] = tools.phone_numbers_to_list(nation_code, phone_numbers)
         data["sign"] = sign
-        data["sig"] = tools.calculate_sig_for_templ_phone_numbers(self.appkey, rnd, cur_time, phone_numbers)
+        data["sig"] = tools.calculate_sig(self.appkey, rnd, cur_time, phone_numbers)
         data["tpl_id"] = templ_id
         data["params"] = params
         data["time"] = cur_time
